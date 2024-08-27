@@ -1,4 +1,5 @@
 import express from "express";
+import colors from 'colors'
 import router from './router'
 import db from "./config/db";
 
@@ -7,13 +8,15 @@ const connectDB = async () => {
     try{
         db.authenticate()
         db.sync()
-        console.log('Conexion exitosa a la base de datos')
+        console.log(colors.bgGreen.bold('Conexion exitosa a la base de datos'))
     } catch(error) {
-        console.error(error)
-        console.log('Hubo un error al conectar a la base de datos')
+        console.log(colors.bgRed.white('Hubo un error al conectar a la base de datos'))
     }
 }
+
 connectDB()
+
+
 const server = express()
 server.use('/api/products', router)
 

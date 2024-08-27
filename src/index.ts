@@ -1,5 +1,7 @@
 import server from './server'
+import colors from 'colors'
 
-server.listen(9000, () => {
-    console.log('rest api en el puerto 9000')
+const port = process.env.PORT || 9001
+server.listen(port, () => {
+    console.log('rest api en el puerto', colors.yellow(`${port}`))
 })
