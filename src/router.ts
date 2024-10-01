@@ -189,7 +189,7 @@ router.put('/:id',
  *              400:
  *                  description: Bad request - invalid Id or invalid input data
  *              404:
- *                  description: Bad request - invalid input data
+ *                  description: Product not found
  *
  */
 
@@ -197,12 +197,68 @@ router.patch('/:id',
     param('id').isInt().withMessage('ID no valido'),
     handleInputErrors,
     updateAvailability
-
 )
+/**
+ *  @swagger
+ *  /api/products/{id}:
+ *      patch:
+ *          summary: Updates a product availability
+ *          tags:
+ *              - Products
+ *          description: Returns the updated availability
+ *          parameters:
+ *            - in: path
+ *              name: id
+ *              description: The ID of the product to retrieve
+ *              required: true
+ *              schema:
+ *                  type: integer
+ *          responses:
+ *              200:
+ *                  description: Product updated successfuly
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/components/schemas/Product'
+ *              400:
+ *                  description: Bad request - invalid ID
+ *              404:
+ *                  description: Product not Found
+ *
+ */
 router.delete('/:id',
     param('id').isInt().withMessage('ID no valido'),
     handleInputErrors,
     deleteProduct
 )
+/**
+ *  @swagger
+ *  /api/products/{id}:
+ *      delete:
+ *          summary: Delete a product by id
+ *          tags:
+ *              - Products
+ *          description: Returns a confirmation message
+ *          parameters:
+ *            - in: path
+ *              name: id
+ *              description: The ID of the product to delete
+ *              required: true
+ *              schema:
+ *                  type: integer
+ *          responses:
+ *              200:
+ *                  description: Product updated successfuly
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              type: string
+ *                              value: Product Deleted
+ *              400:
+ *                  description: Bad request - invalid ID
+ *              404:
+ *                  description: Product not Found
+ *
+ */
 
 export default router
