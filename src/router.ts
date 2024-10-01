@@ -1,5 +1,5 @@
 import { Router } from "express"
-import {body, param} from 'express-validator'
+import { body, param } from 'express-validator'
 import { getProducts, getProductById, createProduct, updateProduct, updateAvailability, deleteProduct } from "./handlers/product"
 import { handleInputErrors } from "./middleware"
 
@@ -65,7 +65,7 @@ router.get('/:id',
  *          summary: Get a product by ID
  *          tags:
  *              - Products
- *          description: Return a a of product base on its unique ID
+ *          description: Return a of product base on its unique ID
  *          parameters:
  *            - in: path
  *              name: id
@@ -90,7 +90,7 @@ router.get('/:id',
 
 router.post('/',
     body('name')
-    .notEmpty().withMessage('El nombre del producto no puede ir vacio'),
+        .notEmpty().withMessage('El nombre del producto no puede ir vacio'),
 
     body('price')
         .isNumeric().withMessage('Valor no valido')
@@ -101,10 +101,43 @@ router.post('/',
     createProduct
 )
 
+/**
+ *  @swagger
+ *  /api/products:
+ *      post:
+ *          summary: Create a new product
+ *          tags:
+ *              - Products
+ *          description: Return a new record in the DB
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              name:
+ *                                  type: string
+ *                                  example: "PC ATX case"
+ *                              price:
+ *                                  type: number
+ *                                  example: "99"
+ *          responses:
+ *              201:
+ *                  description: Product updated successfuly
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/components/schemas/Product'
+ *              400:
+ *                  description: Bad request - invalid input data
+ *
+ */
+
 router.put('/:id',
     param('id').isInt().withMessage('ID no valido'),
     body('name')
-    .notEmpty().withMessage('El nombre del producto no puede ir vacio'),
+        .notEmpty().withMessage('El nombre del producto no puede ir vacio'),
 
     body('price')
         .isNumeric().withMessage('Valor no valido')
@@ -115,6 +148,50 @@ router.put('/:id',
     handleInputErrors,
     updateProduct
 )
+/**
+ *  @swagger
+ *  /api/products/{id}:
+ *      put:
+ *          summary: Updates a product with user input
+ *          tags:
+ *              - Products
+ *          description: Returns the updated product
+ *          parameters:
+ *            - in: path
+ *              name: id
+ *              description: The ID of the product to retrieve
+ *              required: true
+ *              schema:
+ *                  type: integer
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              name:
+ *                                  type: string
+ *                                  example: "PC ATX case"
+ *                              price:
+ *                                  type: number
+ *                                  example: "99"
+ *                              availability:
+ *                                  type: boolean
+ *                                  examaple: true
+ *          responses:
+ *              200:
+ *                  description: Product updated successfuly
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/components/schemas/Product'
+ *              400:
+ *                  description: Bad request - invalid Id or invalid input data
+ *              404:
+ *                  description: Bad request - invalid input data
+ *
+ */
 
 router.patch('/:id',
     param('id').isInt().withMessage('ID no valido'),
